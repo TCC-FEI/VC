@@ -1,0 +1,24 @@
+1.1 Objetivo
+
+O objetivo principal deste trabalho é criar um sistema que receba uma entrada de voz através de um microfone, decodifique o sinal de áudio, reconheça possíveis comandos e então os encaminhe para o sistema operacional.
+
+Tem-se ainda como objetivo secundário a proposição de uma arquitetura que torne a aplicação independente de engine de reconhecimento de fala e que permita a adição e remoção de conjuntos de comandos conforme os programas em execução no desktop.
+
+
+
+4 Considerações
+
+O objetivo deste capítulo é apresentar os resultados esperados, algumas das conclusões obtidas até o momento, bem como elencar algumas das discussões que são deixadas em aberto para serem melhor analisadas até a fase seguinte do projeto.
+
+
+
+4.3.2 Comandar aplicações
+
+O envio de comandos para outras aplicações é um dos problemas resolvidos pelo sistema proposto. Para isso serão utilizadas as bibliotecas AT-SPI e WNCK, que também já foram utilizadas pelo Gnome Voice Control, projeto que serve referência para este sistema.
+
+Elas permitem a implementação de um sistema de envio de comandos para as janelas das aplicações alvo, de forma que isso só funcionará em aplicações que possuem interface gráfica.
+
+Se ao contrário do modo como são implementadas hoje, as aplicações possuíssem uma camada que expusesse uma interface com os seus comandos, tanto teclado e mouse, quanto um reconhecedor de voz poderiam acessá-la de forma transparente.
+
+A proposta formal de uma nova arquitetura para aplicações desktop, que acomode essa camada, inclusive, pode ser o ponto de partida para trabalhos futuros.
+
