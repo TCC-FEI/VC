@@ -1,0 +1,3 @@
+Compilação com a libwnck:
+
+gcc -o app wnck-test.c -DWNCK_I_KNOW_THIS_IS_UNSTABLE `pkg-config --cflags --libs libwnck-3.0`
