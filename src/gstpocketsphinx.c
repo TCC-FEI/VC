@@ -11,7 +11,7 @@ void partial_result(GstElement* object, gchararray arg0, gchararray arg1,
 void result(GstElement* object, gchararray arg0, gchararray arg1,
     gpointer user_data) {
     printf("Result!\n");
-    printf("%s", arg0);
+    printf("%s\n\n", arg0);
 }
 
 int main(int argc, char** argv) {
