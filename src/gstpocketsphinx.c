@@ -2,67 +2,66 @@
 #include <gst/gst.h>
 #include <glib.h>
 
-void run_loop(GMainLoop **loop){
-    g_main_loop_run(*loop);
-    return;
+void partial_result(GstElement* object, gchararray arg0, gchararray arg1,
+    gpointer user_data) {
+    printf("Partial Result!\n");
+    printf("%s\n\n", arg0);
 }
 
-void quit_loop(GMainLoop **loop){
-    g_main_loop_quit(*loop);
-    return;
+void result(GstElement* object, gchararray arg0, gchararray arg1,
+    gpointer user_data) {
+    printf("Result!\n");
+    printf("%s", arg0);
 }
 
-int main (int argc, char** argv){
-
+int main(int argc, char** argv) {
     GMainLoop *loop;
-    GstElement *pipeline, *source, *convert, *resample, *level,
-               *vader, *pocket, *file;
-    GstCaps *caps;
+    GstElement *pipeline, *source, *convert, *resample, *vader, *pocket,
+        *fake;
 
-    gst_init (&argc, &argv);
-
-    caps = caps = gst_caps_from_string ("audio/x-raw-int, "
-                                        "width = (int) 16, "
-                                        "depth = (int) 16, "
-                                        "signed = (boolean) true, "
-                                        "endianness = (int) BYTE_ORDER, "
-                                        "channels = (int) 1, "
-                                        "rate = (int) 16000");
+    gst_init(&argc, &argv);
 
     loop = g_main_loop_new(NULL, FALSE);
 
     pipeline = gst_pipeline_new("pipeline");
-    source   = gst_element_factory_make("autoaudiosrc", "input");
-    convert  = gst_element_factory_make("audioconvert", "converter");
+    source = gst_element_factory_make("autoaudiosrc", "input");
+    convert = gst_element_factory_make("audioconvert", "converter");
     resample = gst_element_factory_make("audioresample", "resample");
-    vader    = gst_element_factory_make("vader", "vader");
-    level    = gst_element_factory_make("level", "level");
-    pocket   = gst_element_factory_make("pocketsphinx", "sphinx");
-    file     = gst_element_factory_make("filesink", "file-sink");
+    vader = gst_element_factory_make("vader", "vader");
+    pocket = gst_element_factory_make("pocketsphinx", "sphinx");
+    fake = gst_element_factory_make("fakesink", "fake");
 
-    if(!pipeline || !source || !convert || !resample || !vader ||
-       !level || !pocket || !file){
+    if (!pipeline || !source || !convert || !resample || !vader || !pocket
+        || !fake) {
         printf("Ocorreu um erro ao criar elementos!\n");
         return -1;
     }
 
-    g_object_set (G_OBJECT (file), "location", "goforward.txt", NULL);
-    g_object_set (G_OBJECT (pocket), "hmm", "/usr/local/share/pocketsphinx/model/hmm/en_US/hub4wsj_sc_8k", NULL);
-    g_object_set (G_OBJECT (pocket), "lm", "/usr/local/share/pocketsphinx/model/lm/en/vc.dmp", NULL);
-    g_object_set (G_OBJECT (pocket), "dict", "/usr/local/share/pocketsphinx/model/lm/en/vc.dic", NULL);
-    g_object_set (G_OBJECT (vader), "auto_threshold", "true", NULL);
+    printf("Elementos criados com sucesso!\n");
+
+    g_object_set(G_OBJECT(pocket), "hmm",
+        "/home/aluno/workspace/VC/data/hmm/en_US/hub4wsj_sc_8k", NULL);
+    g_object_set(G_OBJECT(pocket), "lm",
+        "/home/aluno/workspace/VC/data/lm/en/vc.dmp", NULL);
+    g_object_set(G_OBJECT(pocket), "dict",
+        "/home/aluno/workspace/VC/data/lm/en/vc.dic", NULL);
+
+    g_object_set(G_OBJECT(vader), "auto_threshold", TRUE, NULL);
 
     gst_bin_add_many(GST_BIN(pipeline), source, convert, resample, vader,
-                     pocket, file, NULL);
+        pocket, fake, NULL);
 
-//    gst_element_link(source, convert);
-//    gst_element_link_filtered (convert, level, caps);
-//    gst_element_link(level, file);
+    gst_element_link_many(source, convert, resample, vader, pocket, fake,
+        NULL);
 
-    gst_element_link_many(source, convert, resample, vader, pocket, file, NULL);
+    g_signal_connect (pocket, "partial-result", G_CALLBACK (partial_result), NULL);
+    g_signal_connect (pocket, "result", G_CALLBACK (result), NULL);
+
+    g_object_set(G_OBJECT(pocket), "configured", TRUE, NULL);
 
     gst_element_set_state(pipeline, GST_STATE_PLAYING);
-    run_loop(&loop);
+
+    g_main_loop_run(loop);
 
     return 0;
 }
