@@ -38,9 +38,9 @@ control_plugin_t* create_plugin( Display* display ) {
 }
 
 void destroy_plugin( control_plugin_t* plugin ) {
-    if ( plugin != NULL ) {
-        if ( plugin->commands != NULL ) {
-
+    if ( plugin ) {
+        if ( plugin->commands ) {
+            g_hash_table_destroy( plugin->commands );
         }
 
         free( plugin );
