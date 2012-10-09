@@ -1,40 +1,26 @@
-#include "console.h"
-#include "app.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-typedef struct {
-    app_t* app;
-    GHashTable* commands;
-    gchar* buffer;
-    gboolean terminate;
-} console_t;
-
-typedef void (*console_cmd_ptr)(console_t*, gchar**);
+#include <console/console.h>
+#include <console/types.h>
+#include <console/commands.h>
 
 console_t* _initialize(gpointer data);
 void _finalize(console_t* self);
 
-gchar* _read(console_t* self);
-void _execute(console_t* self, gchar* buffer);
-
-void _cmd_exit(console_t* self, gchar** args);
-void _cmd_help(console_t* self, gchar** args);
-void _cmd_help_print( gpointer key, gpointer value, gpointer data );
+void _read(console_t* self);
+void _execute(console_t* self);
 
 gpointer console(gpointer data) {
-    gchar* cmd;
-
     console_t* self = _initialize(data);
 
     printf("console starting\n");
 
     while (!self->terminate) {
         printf("vc> ");
-        cmd = _read(self);
-        _execute(self, cmd);
+        _read(self);
+        _execute(self);
     }
 
     printf("console ending\n");
@@ -55,8 +41,9 @@ console_t* _initialize(gpointer data) {
         self->buffer = g_strnfill(MAX_BUFF_SIZE, '\0');
         self->commands = g_hash_table_new(g_str_hash, g_str_equal);
 
-        g_hash_table_insert(self->commands, "exit", _cmd_exit);
-        g_hash_table_insert(self->commands, "help", _cmd_help);
+        g_hash_table_insert(self->commands, "help", cc_help);
+        g_hash_table_insert(self->commands, "exit", cc_exit);
+        g_hash_table_insert(self->commands, "exec", cc_exec);
     }
 
     return self;
@@ -76,36 +63,22 @@ void _finalize(console_t* self) {
     }
 }
 
-gchar* _read(console_t* self) {
-    if (fgets(self->buffer, MAX_BUFF_SIZE, stdin) != 0) {
+void _read(console_t* self) {
+    if (fgets(self->buffer, MAX_BUFF_SIZE, stdin)) {
         self->buffer[strlen(self->buffer) - 1] = '\0';
     }
-
-    return self->buffer;
 }
 
-void _execute(console_t* self, gchar* buffer) {
-    if (strlen(buffer) > 0) {
-        gchar** args = g_strsplit(buffer, " ", 0);
+void _execute(console_t* self) {
+    if (strlen(self->buffer) > 0) {
+        gchar** args = g_strsplit(self->buffer, " ", 0);
 
         console_cmd_ptr cmd = g_hash_table_lookup(self->commands, args[0]);
 
         if (cmd != NULL) {
             (*cmd)(self, args);
         }
+
+        g_strfreev(args);
     }
-}
-
-void _cmd_exit(console_t* self, gchar** args) {
-    self->terminate = TRUE;
-}
-
-void _cmd_help(console_t* self, gchar** args) {
-    printf("Commands:\n");
-
-    g_hash_table_foreach( self->commands, _cmd_help_print, NULL );
-}
-
-void _cmd_help_print( gpointer key, gpointer value, gpointer data ) {
-    printf("\t%s: [%p]\n", (char*)key, value );
 }

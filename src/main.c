@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include <app.h>
-#include <console.h>
+#include <console/console.h>
 
 
 int main(int argc, char** argv) {

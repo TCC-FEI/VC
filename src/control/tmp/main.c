@@ -1,9 +1,4 @@
-#include <control/control_plugin.h>
-
-#include <X11/X.h>
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-#include <X11/extensions/XTest.h>
+#include <control/plugin.h>
 
 #include <stdio.h>
 
@@ -14,7 +9,7 @@ void my_print ( gpointer key, gpointer value, gpointer data ) {
 int main( int argc, char** argv ) {
     control_plugin_t* plugin = create_plugin( XOpenDisplay( NULL ) );
 
-    cmd_func_t cmd_ptr;
+    control_command_t cmd_ptr;
 
     cmd_ptr = g_hash_table_lookup( plugin->commands, "file new" );
 

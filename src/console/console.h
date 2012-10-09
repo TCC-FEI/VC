@@ -3,8 +3,6 @@
 
 #include <glib.h>
 
-
-gpointer console( gpointer data );
-
+gpointer console(gpointer data);
 
 #endif
