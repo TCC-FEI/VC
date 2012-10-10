@@ -6,10 +6,12 @@
 
 void file_new(Display* display);
 void file_close(Display* display);
+void file_quit(Display* display);
 
 void register_commands(control_plugin_t* plugin) {
     g_hash_table_insert(plugin->commands, "file new", file_new);
     g_hash_table_insert(plugin->commands, "file close", file_close);
+    g_hash_table_insert(plugin->commands, "file quit", file_quit);
 }
 
 void raise_window(control_plugin_t* plugin) {
@@ -32,6 +34,8 @@ void raise_window(control_plugin_t* plugin) {
 void file_new(Display* display) {
     GArray* set = key_set_new(2);
 
+    printf("cmd file new\n");
+
     key_set_add(set, XK_Control_L);
     key_set_add(set, XK_N);
 
@@ -45,6 +49,17 @@ void file_close(Display* display) {
 
     key_set_add(set, XK_Control_L);
     key_set_add(set, XK_W);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void file_quit(Display* display) {
+    GArray* set = key_set_new(2);
+
+    key_set_add(set, XK_Control_L);
+    key_set_add(set, XK_Q);
 
     send_key_event(display, set);
 

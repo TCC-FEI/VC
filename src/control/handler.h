@@ -1,6 +1,7 @@
 #ifndef CONTROL_HANDLER_H
 #define CONTROL_HANDLER_H
 
+#include <vc.h>
 #include <control/plugin.h>
 
 typedef control_plugin_t* (*create_t)(vcwm_t);
@@ -17,7 +18,7 @@ typedef struct {
     raise_t raise;
 } control_handler_t;
 
-control_handler_t* handler_create();
+control_handler_t* handler_create(gchar*);
 void handler_destroy(gpointer);
 
 #endif

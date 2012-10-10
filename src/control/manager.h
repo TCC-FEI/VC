@@ -1,10 +1,12 @@
 #ifndef CONTROL_MANAGER_H
 #define CONTROL_MANAGER_H
 
+#include <vc.h>
+#include <control/plugin.h>
+
 #include <glib.h>
 #include <X11/Xlib.h>
 #include <libwnck/libwnck.h>
-#include <control/plugin.h>
 
 typedef struct {
     vcwm_t vcwm;
