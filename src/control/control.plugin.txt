@@ -1,1 +1,0 @@
-gcc -shared -Wl,-soname,libgedit.so.1 -o libgedit.so.1.0.0 control/plugin.c control/gedit_plugin.c -I. `pkg-config --cflags --libs glib-2.0 x11 xtst`

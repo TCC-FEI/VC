@@ -1,8 +1,8 @@
-#ifndef CONTROL_MANAGER_H
-#define CONTROL_MANAGER_H
+#ifndef VC_CONTROL_MANAGER_H
+#define VC_CONTROL_MANAGER_H
 
-#include <vc.h>
-#include <control/plugin.h>
+#include <vc/vc.h>
+#include <vc/control/plugin.h>
 
 #include <glib.h>
 #include <X11/Xlib.h>

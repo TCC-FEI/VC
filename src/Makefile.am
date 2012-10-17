@@ -3,25 +3,22 @@ AM_CPPFLAGS = $(DEPS_CFLAGS)
 bin_PROGRAMS = voice-control
 
 voice_control_SOURCES = main.c \
-                        console/console.c \
-                        console/commands.c \
-                        control/manager.c \
-                        control/handler.c \
-                        vc.h \
-                        app.h \
-                        console/types.h \
-                        console/console.h \
-                        console/commands.h \
-                        control/types.h \
-                        control/plugin.h \
-                        control/handler.h \
-                        control/manager.h
+                        vc/console.c \
+                        vc/console_commands.c \
+                        vc/control_manager.c \
+                        vc/control_handler.c \
+                        vc/vc.h \
+                        vc/app.h \
+                        vc/console_types.h \
+                        vc/console.h \
+                        vc/console_commands.h \
+                        vc/control_types.h \
+                        vc/control_plugin.h \
+                        vc/control_handler.h \
+                        vc/control_manager.h
 
 if DEBUG
     voice_control_SOURCES += utils.h utils.c
 endif
 
 voice_control_LDADD = $(DEPS_LIBS)
-
-
-MAINTAINERCLEANFILES = config.h.in Makefile.in

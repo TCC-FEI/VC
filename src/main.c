@@ -1,6 +1,5 @@
-#include <vc.h>
-#include <app.h>
-#include <console/console.h>
+#include <vc/vc.h>
+#include <vc/app.h>
 
 #include <glib.h>
 #include <stdio.h>

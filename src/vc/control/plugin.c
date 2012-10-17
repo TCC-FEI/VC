@@ -1,5 +1,4 @@
-#include <control/plugin.h>
-#include <control/plugin_tools.h>
+#include <vc/control/plugin.h>
 
 #include <stdlib.h>
 #include <X11/X.h>

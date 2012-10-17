@@ -1,7 +1,7 @@
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef VC_CONSOLE_H
+#define VC_CONSOLE_H
 
-#include <vc.h>
+#include <vc/vc.h>
 
 #include <glib.h>
 

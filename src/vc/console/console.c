@@ -1,5 +1,5 @@
-#include <console/console.h>
-#include <console/commands.h>
+#include <vc/console/console.h>
+#include <vc/console/commands.h>
 
 #include <stdlib.h>
 #include <stdio.h>

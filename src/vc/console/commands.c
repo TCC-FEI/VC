@@ -1,4 +1,4 @@
-#include <console/commands.h>
+#include <vc/console/commands.h>
 #include <stdio.h>
 
 void _cc_help_print(gpointer key, gpointer value, gpointer data);

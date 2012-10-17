@@ -1,8 +1,8 @@
-#ifndef CONTROL_HANDLER_H
-#define CONTROL_HANDLER_H
+#ifndef VC_CONTROL_HANDLER_H
+#define VC_CONTROL_HANDLER_H
 
-#include <vc.h>
-#include <control/plugin.h>
+#include <vc/vc.h>
+#include <vc/control/plugin.h>
 
 typedef control_plugin_t* (*create_t)(vcwm_t);
 typedef void (*destroy_t)(control_plugin_t*);

@@ -1,8 +1,8 @@
-#ifndef CONSOLE_COMMANDS_H
-#define CONSOLE_COMMANDS_H
+#ifndef VC_CONSOLE_COMMANDS_H
+#define VC_CONSOLE_COMMANDS_H
 
-#include <vc.h>
-#include <console/types.h>
+#include <vc/vc.h>
+#include <vc/console/types.h>
 
 #include <glib.h>
 

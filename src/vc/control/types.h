@@ -1,5 +1,5 @@
-#ifndef CONTROL_TYPES_H
-#define CONTROL_TYPES_H
+#ifndef VC_CONTROL_TYPES_H
+#define VC_CONTROL_TYPES_H
 
 #include <X11/Xlib.h>
 #include <libwnck/libwnck.h>

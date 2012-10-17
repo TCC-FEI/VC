@@ -2,7 +2,8 @@
 #define APP_H
 
 #include <glib.h>
-#include <control/manager.h>
+#include <vc/control/manager.h>
+#include <vc/console/console.h>
 
 #define MAX_BUFF_SIZE   256
 

@@ -1,7 +1,7 @@
-#ifndef CONSOLE_TYPES_H
-#define CONSOLE_TYPES_H
+#ifndef VC_CONSOLE_TYPES_H
+#define VC_CONSOLE_TYPES_H
 
-#include <app.h>
+#include <vc/app.h>
 #include <glib.h>
 
 typedef struct {
