@@ -1,7 +1,7 @@
 .DS_Store
 .project
 *.so
-*.so.*
+*.so*
 aclocal.m4
 autom4te.cache
 build-aux
@@ -17,3 +17,4 @@ stamp-h1
 voice-control*.tar.gz
 .deps
 .dirstamp
+*~

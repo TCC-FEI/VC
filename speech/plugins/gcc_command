@@ -1,0 +1,2 @@
+aluno@tcc:~/workspace/Sphinx/speech/plugins$ gcc -o main main.c sphinx.c -I. 
+`pkg-config --cflags --libs gstreamer-0.10 glib-2.0`
