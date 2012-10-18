@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
+#include <glib.h>
 
 speech_handler_t* handler_create(gchar* filename) {
     speech_handler_t* self;
@@ -39,15 +40,6 @@ speech_handler_t* handler_create(gchar* filename) {
         return NULL;
     }
     printf("Obtive 'destroy' em:      [%p]\n", self->destroy);
-
-    dlerror();
-    *(void **) (&(self->recognize)) = dlsym(self->lib, "recognize_command");
-    if ((error = dlerror()) != NULL) {
-        printf("%s\n", dlerror());
-        handler_destroy(self);
-        return NULL;
-    }
-    printf("Obtive 'recognize_command' em: [%p]\n", self->recognize);
     
     dlerror();
     *(void **) (&(self->start)) = dlsym(self->lib, "start");

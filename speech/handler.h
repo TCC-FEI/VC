@@ -1,4 +1,4 @@
-#ifdef  SPEECH_HANDLER_H
+#ifndef SPEECH_HANDLER_H
 #define SPEECH_HANDLER_H
 
 #include <speech/plugin.h>

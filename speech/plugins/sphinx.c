@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <glib.h>
 #include <gst/gst.h>
-#include <plugin.h>
+#include <speech/plugin.h>
 
 void partial_result(GstElement*, gchararray, gchararray, gpointer);
 void result(GstElement*, gchararray, gchararray, gpointer);
@@ -79,7 +79,7 @@ void speech_plugin_destroy(speech_plugin_t* plugin ) {
     
 }
 
-gboolean speech_plugin_start(speech_plugin_t* plugin ) {
+gboolean speech_plugin_start(speech_plugin_t* plugin) {
     gst_element_set_state(plugin->pipeline, GST_STATE_PLAYING);
     return FALSE;
 }
