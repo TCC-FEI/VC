@@ -42,6 +42,29 @@ void cc_ctrl(console_t* self, gchar** args) {
     }
 }
 
+void cc_spch(console_t* self, gchar** args) {
+    gchar* command;
+    speech_manager_t* manager = self->app->speech;
+
+    vc_trace_strv("console::commands::spch() args:", args);
+
+    if (g_strv_length(args) >= 2) {
+        if (strcmp(args[1], "load") == 0) {
+            speech_manager_load(manager, args[2]);
+        } else if (strcmp(args[1], "unload") == 0) {
+            speech_manager_unload(manager);
+        } else if (strcmp(args[1], "start") == 0) {
+            (*(manager->handler->start))(manager->handler->instance);
+        } else if (strcmp(args[1], "stop") == 0) {
+            (*(manager->handler->stop))(manager->handler->instance);
+        } else {
+            printf("comando '%s' não encontrado\n", args[1]);
+        }
+    } else {
+        printf("comando inválido\n");
+    }
+}
+
 void _cc_help_print(gpointer key, gpointer value, gpointer data) {
     printf("\t%s: [%p]\n", (char*) key, value);
 }

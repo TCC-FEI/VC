@@ -17,7 +17,7 @@ speech_manager_t* speech_manager_create() {
 
     vc_trace("%d bytes alocados: [%p]\n", sizeof(speech_manager_t), self);
 
-    self->plugin_dir = "/home/aluno/workspace/Sphinx/speech/plugins/";
+    self->plugin_dir = "/tmp/lib/plugins/";
 
     vc_trace("Diretótio de plugins: [%s]\n", self->plugin_dir);
 

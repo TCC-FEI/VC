@@ -60,6 +60,7 @@ console_t* _initialize(gpointer data) {
     g_hash_table_insert(self->commands, "exit", cc_exit);
     g_hash_table_insert(self->commands, "quit", cc_exit);
     g_hash_table_insert(self->commands, "ctrl", cc_ctrl);
+    g_hash_table_insert(self->commands, "spch", cc_spch);
 
     vc_trace_hash("Tabela de comandos", self->commands);
 
