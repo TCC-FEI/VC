@@ -18,7 +18,7 @@ typedef struct {
     raise_t raise;
 } control_handler_t;
 
-control_handler_t* handler_create(gchar*);
-void handler_destroy(gpointer);
+control_handler_t* control_handler_create(gchar*);
+void control_handler_destroy(gpointer);
 
 #endif

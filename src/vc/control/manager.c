@@ -20,7 +20,7 @@ control_manager_t* control_manager_create(vcwm_t vcwm) {
     vc_trace("%d bytes alocados: [%p]\n", sizeof(control_manager_t), self);
 
     self->plugins = g_hash_table_new_full(g_str_hash, g_str_equal, g_free,
-        handler_destroy);
+        control_handler_destroy);
     if (!self->plugins) {
         vc_trace("Falha ao inicializar tabela de plugins\n");
         control_manager_destroy(self);
@@ -66,7 +66,7 @@ gboolean control_manager_load(control_manager_t* self, gchar* plugin_name) {
         return FALSE;
     }
 
-    handler = handler_create(path);
+    handler = control_handler_create(path);
     vc_trace("control::manager::load(): handler: [%p]\n", handler);
     if (!handler) {
         vc_trace("Falha ao criar handler do plugin de controle\n");
@@ -79,7 +79,7 @@ gboolean control_manager_load(control_manager_t* self, gchar* plugin_name) {
     handler->instance = (*(handler->create))(self->vcwm);
     if (!handler->instance) {
         vc_trace("Falha ao criar instância do plugin %s\n", plugin_name);
-        handler_destroy(handler);
+        control_handler_destroy(handler);
         return FALSE;
     }
     vc_trace("Criada instância do plugin %s em [%p]\n", plugin_name,
@@ -90,7 +90,7 @@ gboolean control_manager_load(control_manager_t* self, gchar* plugin_name) {
         vc_trace("Falha ao obter comandos do plugin %s\n", plugin_name);
         (*(handler->destroy))(handler->instance);
         dlclose(handler->lib);
-        handler_destroy(handler);
+        control_handler_destroy(handler);
         return FALSE;
     }
     vc_trace_hash("Comandos do plugin", commands);

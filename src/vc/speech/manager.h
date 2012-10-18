@@ -1,17 +1,17 @@
-#ifndef SPEECH_MANAGER_H
-#define SPEECH_MANAGER_H
+#ifndef VC_SPEECH_MANAGER_H
+#define VC_SPEECH_MANAGER_H
+
+#include <vc/vc.h>
+#include <vc/speech/handler.h>
 
 #include <glib.h>
-#include <speech/handler.h>
 
 typedef struct {
-    int* argc;
-    char*** argv;
     speech_handler_t* handler;
     gchar* plugin_dir;
 } speech_manager_t;
 
-speech_manager_t* speech_manager_create(int*, char***);
+speech_manager_t* speech_manager_create();
 void speech_manager_destroy(speech_manager_t*);
 
 gboolean speech_manager_load(speech_manager_t*, gchar*);

@@ -30,7 +30,9 @@ AC_DEFINE_UNQUOTED(
 AC_DEFINE([WNCK_I_KNOW_THIS_IS_UNSTABLE], 1,
           [alerts libwnck that I know what I am doing])
 
-PKG_CHECK_MODULES([DEPS], [glib-2.0 libwnck-3.0 x11 xtst])
+PKG_CHECK_MODULES([APP_DEPS], [glib-2.0 libwnck-3.0 x11])
+PKG_CHECK_MODULES([VCC_DEPS], [glib-2.0 libwnck-3.0 x11 xtst])
+PKG_CHECK_MODULES([VCS_DEPS], [glib-2.0 gstreamer-0.10])
 
 
 AC_ARG_ENABLE([debug],

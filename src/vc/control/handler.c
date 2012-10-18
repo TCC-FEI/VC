@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <dlfcn.h>
 
-control_handler_t* handler_create(gchar* filename) {
+control_handler_t* control_handler_create(gchar* filename) {
     control_handler_t* self;
     char* error;
 
@@ -17,7 +17,7 @@ control_handler_t* handler_create(gchar* filename) {
     vc_trace("Carregando biblioteca dinâmica em [%p]\n", self->lib);
     if (!self->lib) {
         vc_trace("%s\n", dlerror());
-        handler_destroy(self);
+        control_handler_destroy(self);
         return NULL;
     }
 
@@ -25,7 +25,7 @@ control_handler_t* handler_create(gchar* filename) {
     *(void **) (&(self->create)) = dlsym(self->lib, "create");
     if ((error = dlerror()) != NULL) {
         vc_trace("%s\n", dlerror());
-        handler_destroy(self);
+        control_handler_destroy(self);
         return NULL;
     }
     vc_trace("Obtive 'create' em:       [%p]\n", self->create);
@@ -34,7 +34,7 @@ control_handler_t* handler_create(gchar* filename) {
     *(void **) (&(self->destroy)) = dlsym(self->lib, "destroy");
     if ((error = dlerror()) != NULL) {
         vc_trace("%s\n", dlerror());
-        handler_destroy(self);
+        control_handler_destroy(self);
         return NULL;
     }
     vc_trace("Obtive 'destroy' em:      [%p]\n", self->destroy);
@@ -43,7 +43,7 @@ control_handler_t* handler_create(gchar* filename) {
     *(void **) (&(self->commands)) = dlsym(self->lib, "commands");
     if ((error = dlerror()) != NULL) {
         vc_trace("%s\n", dlerror());
-        handler_destroy(self);
+        control_handler_destroy(self);
         return NULL;
     }
     vc_trace("Obtive 'commands' em:     [%p]\n", self->commands);
@@ -52,7 +52,7 @@ control_handler_t* handler_create(gchar* filename) {
     *(void **) (&(self->raise)) = dlsym(self->lib, "raise_window");
     if ((error = dlerror()) != NULL) {
         vc_trace("%s\n", dlerror());
-        handler_destroy(self);
+        control_handler_destroy(self);
         return NULL;
     }
     vc_trace("Obtive 'raise_window' em: [%p]\n", self->raise);
@@ -60,7 +60,7 @@ control_handler_t* handler_create(gchar* filename) {
     return self;
 }
 
-void handler_destroy(gpointer handler) {
+void control_handler_destroy(gpointer handler) {
     control_handler_t* self = (control_handler_t*) handler;
 
     if (self) {

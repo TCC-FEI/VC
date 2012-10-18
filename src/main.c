@@ -24,8 +24,9 @@ int main(int argc, char** argv) {
     vc_trace("Obtendo WnckScreen default: [%p]\n", vcwm.screen);
     wnck_screen_force_update(vcwm.screen);
 
-    app.manager = control_manager_create(vcwm);
-    if (app.manager) {
+    app.control = control_manager_create(vcwm);
+    app.speech  =  speech_manager_create();
+    if (app.control && app.speech) {
         cmd_th = g_thread_try_new("console", console, &app, &cmd_th_err);
         if (cmd_th) {
             g_main_loop_run(app.main_loop);
@@ -33,9 +34,10 @@ int main(int argc, char** argv) {
             printf("g_thread error: %s\n", cmd_th_err->message);
         }
 
-        control_manager_destroy(app.manager);
+        control_manager_destroy(app.control);
+        speech_manager_destroy(app.speech);
     } else {
-        vc_trace("Falha ao inicializar controlador\n");
+        vc_trace("Falha ao inicializar componentes\n");
     }
 
     return return_code;

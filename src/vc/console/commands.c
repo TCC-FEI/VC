@@ -19,7 +19,7 @@ void cc_exit(console_t* self, gchar** args) {
 
 void cc_ctrl(console_t* self, gchar** args) {
     gchar* command;
-    control_manager_t* manager = self->app->manager;
+    control_manager_t* manager = self->app->control;
 
     vc_trace_strv("console::commands::ctrl() args:", args);
 
