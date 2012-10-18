@@ -1,0 +1,4 @@
+#ifdef SPEECH_MANAGER_H
+#define SPEECH_MANAGER_H
+
+#endif
