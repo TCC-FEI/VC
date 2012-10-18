@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <glib.h>
 #include <gst/gst.h>
-#include "sphinx.h"
+#include <plugin.h>
+
+void partial_result(GstElement*, gchararray, gchararray, gpointer);
+void result(GstElement*, gchararray, gchararray, gpointer);
 
 speech_plugin_t* speech_plugin_create(int* argc, char*** argv) {
     
