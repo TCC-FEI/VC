@@ -3,7 +3,7 @@
 
 #include <speech/plugin.h>
 
-typedef speech_plugin_t* (*create_t)();
+typedef speech_plugin_t* (*create_t)(int*, char***);
 typedef void (*destroy_t)(speech_plugin_t*);
 typedef gboolean (*start_t)(speech_plugin_t*);
 typedef gboolean (*stop_t)(speech_plugin_t*);
@@ -15,7 +15,7 @@ typedef struct {
     destroy_t destroy;
     start_t start;
     stop_t stop;
-} speech_hendler_t;
+} speech_handler_t;
 
 speech_handler_t* handler_create(gchar*);
 void handler_destroy(gpointer);

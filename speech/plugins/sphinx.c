@@ -5,6 +5,7 @@
 
 void partial_result(GstElement*, gchararray, gchararray, gpointer);
 void result(GstElement*, gchararray, gchararray, gpointer);
+void recognize_command(gchararray);
 
 speech_plugin_t* speech_plugin_create(int* argc, char*** argv) {
     
@@ -34,12 +35,12 @@ speech_plugin_t* speech_plugin_create(int* argc, char*** argv) {
     
     printf("Criando os elementos da pipeline...\n");
     
-    source = gst_element_factory_make("autoaudiosrc", "input");
-    convert = gst_element_factory_make("audioconvert", "converter");
+    source   = gst_element_factory_make("autoaudiosrc", "input");
+    convert  = gst_element_factory_make("audioconvert", "converter");
     resample = gst_element_factory_make("audioresample", "resample");
-    vader = gst_element_factory_make("vader", "vader");
-    pocket = gst_element_factory_make("pocketsphinx", "sphinx");
-    fake = gst_element_factory_make("fakesink", "fake");
+    vader    = gst_element_factory_make("vader", "vader");
+    pocket   = gst_element_factory_make("pocketsphinx", "sphinx");
+    fake     = gst_element_factory_make("fakesink", "fake");
     
     printf("Criou elementos!\n");
 
@@ -51,7 +52,7 @@ speech_plugin_t* speech_plugin_create(int* argc, char*** argv) {
 
     printf("Elementos criados com sucesso!\n");
     
-     g_object_set(G_OBJECT(pocket), "hmm",
+    g_object_set(G_OBJECT(pocket), "hmm",
         "/home/aluno/workspace/VC/data/hmm/en_US/hub4wsj_sc_8k", NULL);
     g_object_set(G_OBJECT(pocket), "lm",
         "/home/aluno/workspace/Temp/new/7569.dmp", NULL);
@@ -88,6 +89,10 @@ gboolean speech_plugin_stop(speech_plugin_t* plugin ) {
     return FALSE;
 }
 
+void recognize_command(gchararray command) {
+    printf("%s\n", command);
+}
+
 void partial_result(GstElement* object, gchararray arg0, gchararray arg1,
     gpointer user_data) {
     printf("Partial Result!\n");
@@ -96,7 +101,6 @@ void partial_result(GstElement* object, gchararray arg0, gchararray arg1,
 
 void result(GstElement* object, gchararray arg0, gchararray arg1,
     gpointer user_data) {
-    printf("Result!\n");
-    printf("%s\n\n", arg0);
+    recognize_command(arg0);
 }
 
