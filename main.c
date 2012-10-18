@@ -14,8 +14,8 @@ int main(int argc, char** argv){
     
     manager = speech_manager_create(&argc, &argv);
     
-    if(!manager->handler) {
-        printf("Nao foi possivel criar plugin\n");
+    if(!manager) {
+        printf("Nao foi possivel criar manager\n");
         speech_manager_destroy(manager);
         return -1;
     }

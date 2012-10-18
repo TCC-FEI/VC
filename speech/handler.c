@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
-#include <glib.h>
 
 speech_handler_t* handler_create(gchar* filename) {
     speech_handler_t* self;
