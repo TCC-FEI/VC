@@ -29,7 +29,7 @@ control_manager_t* control_manager_create(vcwm_t vcwm) {
 
     vc_trace_hash("Tabela de plugins", self->plugins);
 
-    self->plugin_dir = "/home/aluno/workspace/VC/src/control/plugins/";
+    self->plugin_dir = "/tmp/lib/plugins/";
     vc_trace("Diretótio de plugins: [%s]\n", self->plugin_dir);
 
     self->vcwm = vcwm;
@@ -58,7 +58,7 @@ gboolean control_manager_load(control_manager_t* self, gchar* plugin_name) {
     gchar* path;
     control_handler_t* handler;
 
-    path = g_strconcat(self->plugin_dir, "lib", plugin_name, ".so", NULL);
+    path = g_strconcat(self->plugin_dir, "lib", plugin_name, "-", VCC_PLUGIN_API_VERSION, ".so", NULL);
     vc_trace("control::manager::load(): plugin: [%s]\n", plugin_name);
     vc_trace("control::manager::load(): path:   [%s]\n", path);
     if (!strlen(path)) {

@@ -15,12 +15,22 @@ AC_SUBST([VCC_PLUGIN_API_VERSION], [1.0])
 
 AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile src/Makefile vcc-plugin-${VCC_PLUGIN_API_VERSION}.pc:vcc-plugin.pc.in])
+AC_CONFIG_FILES([
+    Makefile
+    src/Makefile
+    vcc-plugin-${VCC_PLUGIN_API_VERSION}.pc:vcc-plugin.pc.in
+])
+
+AC_DEFINE_UNQUOTED(
+    [VCC_PLUGIN_API_VERSION],
+    ["${VCC_PLUGIN_API_VERSION}"],
+    [foobar]
+)
 
 AC_DEFINE([WNCK_I_KNOW_THIS_IS_UNSTABLE], 1,
           [alerts libwnck that I know what I am doing])
 
-PKG_CHECK_MODULES([DEPS], [glib-2.0 libwnck-3.0 x11])
+PKG_CHECK_MODULES([DEPS], [glib-2.0 libwnck-3.0 x11 xtst])
 
 
 AC_ARG_ENABLE([debug],

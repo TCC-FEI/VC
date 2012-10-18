@@ -5,6 +5,7 @@
 
 #include <glib.h>
 #include <X11/Xlib.h>
+#include <X11/keysym.h>
 #include <libwnck/libwnck.h>
 
 typedef struct {

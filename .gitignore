@@ -16,3 +16,4 @@ Makefile.in
 stamp-h1
 voice-control*.tar.gz
 .deps
+.dirstamp
