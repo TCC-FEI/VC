@@ -77,6 +77,8 @@ gpointer create(gpointer data) {
     g_signal_connect(pocket, "result", G_CALLBACK(result), data);
 
     g_object_set(G_OBJECT(pocket), "configured", TRUE, NULL);
+
+    return self;
 }
 
 void destroy(gpointer data) {
