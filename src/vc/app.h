@@ -8,12 +8,11 @@
 
 #define MAX_BUFF_SIZE   256
 
-
 typedef struct {
-    GMainLoop*  main_loop;
+    GMainLoop* main_loop;
     control_manager_t* control;
     speech_manager_t* speech;
+    execute_t* execute;
 } app_t;
-
 
 #endif

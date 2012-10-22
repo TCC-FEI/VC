@@ -6,7 +6,7 @@
 #include <string.h>
 #include <dlfcn.h>
 
-control_manager_t* control_manager_create(vcwm_t vcwm) {
+gpointer control_manager_create(vcwm_t vcwm) {
     vc_trace("\nControlador inicializando...\n");
 
     control_manager_t* self;
@@ -36,10 +36,14 @@ control_manager_t* control_manager_create(vcwm_t vcwm) {
     vc_trace("Display obtido:    [%p]\n", self->vcwm.display);
     vc_trace("WnckScreen obtida: [%p]\n", self->vcwm.screen);
 
+    self->execute = control_manager_execute;
+
     return self;
 }
 
-void control_manager_destroy(control_manager_t* self) {
+void control_manager_destroy(gpointer data) {
+    control_manager_t* self = (control_manager_t*) data;
+
     vc_trace("\nControlador finalizando...\n");
     if (self) {
         if (self->plugins) {
@@ -54,11 +58,14 @@ void control_manager_destroy(control_manager_t* self) {
     vc_trace("Controlador finalizado\n");
 }
 
-gboolean control_manager_load(control_manager_t* self, gchar* plugin_name) {
+gboolean control_manager_load(gpointer data, gchar* plugin_name) {
     gchar* path;
     control_handler_t* handler;
 
-    path = g_strconcat(self->plugin_dir, "lib", plugin_name, "-", VCC_PLUGIN_API_VERSION, ".so", NULL);
+    control_manager_t* self = (control_manager_t*) data;
+
+    path = g_strconcat(self->plugin_dir, "lib", plugin_name, "-",
+        VCC_PLUGIN_API_VERSION, ".so", NULL);
     vc_trace("control::manager::load(): plugin: [%s]\n", plugin_name);
     vc_trace("control::manager::load(): path:   [%s]\n", path);
     if (!strlen(path)) {
@@ -101,7 +108,9 @@ gboolean control_manager_load(control_manager_t* self, gchar* plugin_name) {
     return TRUE;
 }
 
-gboolean control_manager_unload(control_manager_t* self, gchar* plugin_name) {
+gboolean control_manager_unload(gpointer data, gchar* plugin_name) {
+    control_manager_t* self = (control_manager_t*) data;
+
     if (self) {
         g_hash_table_remove(self->plugins, plugin_name);
         return TRUE;
@@ -110,7 +119,7 @@ gboolean control_manager_unload(control_manager_t* self, gchar* plugin_name) {
     }
 }
 
-gboolean control_manager_execute(control_manager_t* self, gchar* command) {
+gboolean control_manager_execute(gpointer data, gchar* command) {
     gboolean retval = FALSE;
     control_handler_t* handler = NULL;
     GHashTable* commands = NULL;
@@ -124,7 +133,7 @@ gboolean control_manager_execute(control_manager_t* self, gchar* command) {
     printf("plugin: [%s]\n", plugin);
     printf("cmd:    [%s]\n", cmd);
 
-    //g_hash_table_foreach(self->plugins, my_print, NULL);
+    control_manager_t* self = (control_manager_t*) data;
 
     if (handler = g_hash_table_lookup(self->plugins, plugin)) {
         if (commands = (*(handler->commands))(handler->instance)) {
@@ -152,6 +161,7 @@ gboolean control_manager_execute(control_manager_t* self, gchar* command) {
 void _list_commands(gpointer key, gpointer value, gpointer data) {
     printf("\t\t'%s' em: [%p]\n", (char*) key, value);
 }
+
 void _list_plugins(gpointer key, gpointer value, gpointer data) {
     control_handler_t* handler = (control_handler_t*) value;
     GHashTable* commands = (*(handler->commands))(handler->instance);

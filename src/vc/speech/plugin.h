@@ -2,13 +2,15 @@
 #define VC_SPEECH_PLUGIN_H
 
 #include <config.h>
-
-#include <stdio.h>
 #include <glib.h>
-#include <gst/gst.h>
+#include <vc/control/manager.h>
 
-typedef struct {
-    GstElement* pipeline;
-} speech_plugin_t;
+typedef struct speech_plugin_st speech_plugin_t;
+
+gpointer create(gpointer);
+void destroy(gpointer);
+
+gboolean start(gpointer);
+gboolean stop(gpointer);
 
 #endif
