@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     wnck_screen_force_update(vcwm.screen);
 
     app.control = control_manager_create(vcwm);
-    app.speech  =  speech_manager_create();
+    app.speech  =  speech_manager_create(app.control);
     if (app.control && app.speech) {
         cmd_th = g_thread_try_new("console", console, &app, &cmd_th_err);
         if (cmd_th) {

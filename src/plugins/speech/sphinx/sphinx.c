@@ -14,7 +14,12 @@ void result(GstElement* object, gchararray arg0, gchararray arg1,
 
     printf("hipótese: %s\n", arg0);
 
-    (*(control->execute))(control, arg0);
+    printf("object: [%p]\n", object);
+    printf("arg0:   [%p]\n", arg0);
+    printf("arg1:   [%p]\n", arg1);
+    printf("data:   [%p]\n", data);
+
+    (*(control->execute))(control, g_utf8_strdown (arg0, -1));
 }
 
 gpointer create(gpointer data) {
@@ -74,6 +79,7 @@ gpointer create(gpointer data) {
     gst_element_link_many(source, convert, resample, vader, pocket, fake,
         NULL);
 
+    printf("data: [%p]\n", data);
     g_signal_connect(pocket, "result", G_CALLBACK(result), data);
 
     g_object_set(G_OBJECT(pocket), "configured", TRUE, NULL);

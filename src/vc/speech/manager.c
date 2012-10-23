@@ -5,8 +5,9 @@
 #include <glib.h>
 #include <dlfcn.h>
 
-speech_manager_t* speech_manager_create() {
+speech_manager_t* speech_manager_create(gpointer data) {
     speech_manager_t* self;
+    control_manager_t* control;
 
     self = (speech_manager_t*) malloc(sizeof(speech_manager_t));
 
@@ -20,6 +21,8 @@ speech_manager_t* speech_manager_create() {
     self->plugin_dir = "/tmp/lib/plugins/";
 
     vc_trace("Diretótio de plugins: [%s]\n", self->plugin_dir);
+
+    self->control = control;
 
     return self;
 }
@@ -58,7 +61,7 @@ gboolean speech_manager_load(speech_manager_t* self, gchar* plugin_name) {
     vc_trace("Liberando memória da variável 'path' [%p]\n", path);
     g_free(path);
 
-    handler->instance = (*(handler->create))();
+    handler->instance = (*(handler->create))(self->control);
     if (!handler->instance) {
         vc_trace("Falha ao criar instância do plugin %s\n", plugin_name);
         speech_handler_destroy(handler);
