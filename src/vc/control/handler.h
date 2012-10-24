@@ -4,10 +4,11 @@
 #include <vc/vc.h>
 #include <vc/control/plugin.h>
 
-typedef control_plugin_t* (*create_t)(vcwm_t);
-typedef void (*destroy_t)(control_plugin_t*);
-typedef GHashTable* (*commands_t)(control_plugin_t*);
-typedef void (*raise_t)(control_plugin_t*);
+typedef gpointer (*create_t)(gpointer);
+typedef void (*destroy_t)(gpointer);
+typedef GHashTable* (*commands_t)(gpointer);
+typedef void (*raise_t)(gpointer);
+typedef void (*control_command_t)(gpointer);
 
 typedef struct {
     void* lib;

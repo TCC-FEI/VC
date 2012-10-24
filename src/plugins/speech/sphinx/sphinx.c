@@ -1,7 +1,6 @@
 #include <vc/speech/plugin.h>
 
 #include <gst/gst.h>
-#include <stdlib.h>
 #include <stdio.h>
 
 struct speech_plugin_st {
@@ -27,7 +26,7 @@ gpointer create(gpointer data) {
     GstElement *source, *convert, *resample, *vader, *pocket, *fake;
     GError* error;
 
-    self = (speech_plugin_t*) malloc(sizeof(speech_plugin_t));
+    self = g_try_new0(speech_plugin_t, 1);
     if (!self) {
         printf("Falha ao alocar memória para o plugin de reconhecimento\n");
         return NULL;
@@ -92,7 +91,7 @@ void destroy(gpointer data) {
 
     if (self) {
         stop(self);
-        free(self);
+        g_free(self);
     }
 }
 

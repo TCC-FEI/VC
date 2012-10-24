@@ -7,10 +7,8 @@
 
 speech_manager_t* speech_manager_create(gpointer data) {
     speech_manager_t* self;
-    control_manager_t* control;
 
-    self = (speech_manager_t*) malloc(sizeof(speech_manager_t));
-
+    self = g_try_new0(speech_manager_t, 1);
     if (!self) {
         vc_trace("Falha ao alocar memoria para o controlador\n");
         return NULL;
@@ -22,7 +20,7 @@ speech_manager_t* speech_manager_create(gpointer data) {
 
     vc_trace("Diretótio de plugins: [%s]\n", self->plugin_dir);
 
-    self->control = control;
+    self->control = (control_manager_t*) data;
 
     return self;
 }
@@ -32,7 +30,7 @@ void speech_manager_destroy(speech_manager_t* self) {
 
     if (self) {
         vc_trace("Liberando memoria do contralor [%p]\n", self);
-        free(self);
+        g_free(self);
     }
 
     vc_trace("Controlador finalizado\n");
@@ -42,7 +40,8 @@ gboolean speech_manager_load(speech_manager_t* self, gchar* plugin_name) {
     gchar* path;
     speech_handler_t* handler;
 
-    path = g_strconcat(self->plugin_dir, "lib", plugin_name, "-", VCC_PLUGIN_API_VERSION, ".so", NULL);
+    path = g_strconcat(self->plugin_dir, "lib", plugin_name, "-",
+        VCC_PLUGIN_API_VERSION, ".so", NULL);
 
     vc_trace("vc::speech::manager::load(): plugin: [%s]\n", plugin_name);
     vc_trace("vc::speech::manager::load(): path:   [%s]\n", path);

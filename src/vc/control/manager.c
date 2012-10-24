@@ -1,17 +1,26 @@
 #include <vc/control/manager.h>
 #include <vc/control/handler.h>
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <dlfcn.h>
 
-gpointer control_manager_create(vcwm_t vcwm) {
+gchar* _plugin_path(gchar*, gchar*);
+void _list_commands( gpointer, gpointer, gpointer);
+void _list_plugins( gpointer, gpointer, gpointer);
+
+gpointer control_manager_create(gpointer data) {
+    control_manager_args_t* args = NULL;
+    control_manager_t* self = NULL;
+
     vc_trace("\nControlador inicializando...\n");
 
-    control_manager_t* self;
+    args = (control_manager_args_t*) data;
+    if (!args) {
+        vc_trace("Argumentos inválidos. Abortando...\n");
+        return NULL;
+    }
 
-    self = (control_manager_t*) malloc(sizeof(control_manager_t));
+    self = g_try_new0(control_manager_t, 1);
     if (!self) {
         vc_trace("Falha ao alocar memória para o controlador\n");
         return NULL;
@@ -29,10 +38,10 @@ gpointer control_manager_create(vcwm_t vcwm) {
 
     vc_trace_hash("Tabela de plugins", self->plugins);
 
-    self->plugin_dir = "/tmp/lib/plugins/";
+    self->plugin_dir = args->plugin_dir;
     vc_trace("Diretótio de plugins: [%s]\n", self->plugin_dir);
 
-    self->vcwm = vcwm;
+    self->vcwm = args->vcwm;
     vc_trace("Display obtido:    [%p]\n", self->vcwm.display);
     vc_trace("WnckScreen obtida: [%p]\n", self->vcwm.screen);
 
@@ -52,51 +61,64 @@ void control_manager_destroy(gpointer data) {
         }
 
         vc_trace("Liberando memória do controlador [%p]\n", self);
-        free(self);
+        g_free(self);
     }
 
     vc_trace("Controlador finalizado\n");
 }
 
-gboolean control_manager_load(gpointer data, gchar* plugin_name) {
-    gchar* path;
-    control_handler_t* handler;
-
+void control_manager_list(gpointer data) {
     control_manager_t* self = (control_manager_t*) data;
 
-    path = g_strconcat(self->plugin_dir, "lib", plugin_name, "-",
-        VCC_PLUGIN_API_VERSION, ".so", NULL);
-    vc_trace("control::manager::load(): plugin: [%s]\n", plugin_name);
-    vc_trace("control::manager::load(): path:   [%s]\n", path);
-    if (!strlen(path)) {
-        vc_trace("Arquivo de plugin inválido\n");
+    printf("Plugins de controle: %d\n", g_hash_table_size(self->plugins));
+    g_hash_table_foreach(self->plugins, _list_plugins, NULL);
+}
+
+gboolean control_manager_load(gpointer data, gchar* plugin_name) {
+    gchar* plugin_path = NULL;
+    control_handler_t* handler = NULL;
+    control_manager_t* self = (control_manager_t*) data;
+
+    if (!self) {
+        vc_trace("control_manager_load: self inválido\n");
         return FALSE;
     }
 
-    handler = control_handler_create(path);
-    vc_trace("control::manager::load(): handler: [%p]\n", handler);
+    if (!plugin_name) {
+        vc_trace("control_manager_load: plugin_name inválido\n");
+        return FALSE;
+    }
+
+    plugin_path = _plugin_path(self->plugin_dir, plugin_name);
+    if (!strlen(plugin_path)) {
+        vc_trace("Arquivo de plugin inválido\n");
+        return FALSE;
+    }
+    vc_trace("control_manager_load: plugin_name: [%s]\n", plugin_name);
+    vc_trace("control_manager_load: plugin_path: [%s]\n", plugin_path);
+
+    handler = control_handler_create(plugin_path);
     if (!handler) {
         vc_trace("Falha ao criar handler do plugin de controle\n");
         return FALSE;
     }
+    vc_trace("control_manager_load: handler: [%p]\n", handler);
 
-    vc_trace("Liberando memória da variável 'path' [%p]\n", path);
-    g_free(path);
+    vc_trace("Liberando memória de 'plugin_path' [%p]\n", plugin_path);
+    g_free(plugin_path);
 
-    handler->instance = (*(handler->create))(self->vcwm);
+    vc_trace("Inicializando plugin '%s'\n", plugin_name);
+    handler->instance = (*(handler->create))(&self->vcwm);
     if (!handler->instance) {
         vc_trace("Falha ao criar instância do plugin %s\n", plugin_name);
         control_handler_destroy(handler);
         return FALSE;
     }
-    vc_trace("Criada instância do plugin %s em [%p]\n", plugin_name,
-        handler->instance);
+    vc_trace("Plugin %s alocado em [%p]\n", plugin_name, handler->instance);
 
     GHashTable* commands = (*(handler->commands))(handler->instance);
     if (!commands) {
         vc_trace("Falha ao obter comandos do plugin %s\n", plugin_name);
-        (*(handler->destroy))(handler->instance);
-        dlclose(handler->lib);
         control_handler_destroy(handler);
         return FALSE;
     }
@@ -111,49 +133,108 @@ gboolean control_manager_load(gpointer data, gchar* plugin_name) {
 gboolean control_manager_unload(gpointer data, gchar* plugin_name) {
     control_manager_t* self = (control_manager_t*) data;
 
-    if (self) {
-        g_hash_table_remove(self->plugins, plugin_name);
-        return TRUE;
-    } else {
+    if (!self) {
+        vc_trace("control_manager_unload: self inválido\n");
         return FALSE;
     }
+
+    if (!plugin_name) {
+        vc_trace("control_manager_unload: plugin_name inválido\n");
+        return FALSE;
+    }
+
+    g_hash_table_remove(self->plugins, plugin_name);
+
+    return TRUE;
 }
 
 gboolean control_manager_execute(gpointer data, gchar* command) {
+    control_manager_t* self = NULL;
     gboolean retval = FALSE;
+
+    gchar** args = NULL;
+    gchar* plugin_name = NULL;
+    gchar* plugin_exec = NULL;
+
     control_handler_t* handler = NULL;
     GHashTable* commands = NULL;
-    control_command_t cc_cb = NULL;
 
-    gchar** args = g_strsplit(command, " ", 0);
-    gchar* plugin = args[0];
-    gchar* cmd = g_strjoinv(" ", &args[1]);
+    control_command_t cmd_cb = NULL;
+    raise_t raise_cb = NULL;
 
-    printf("command:[%s]\n", command);
-    printf("plugin: [%s]\n", plugin);
-    printf("cmd:    [%s]\n", cmd);
+    self = (control_manager_t*) data;
 
-    control_manager_t* self = (control_manager_t*) data;
-
-    if (handler = g_hash_table_lookup(self->plugins, plugin)) {
-        if (commands = (*(handler->commands))(handler->instance)) {
-            if (cc_cb = g_hash_table_lookup(commands, cmd)) {
-                (*(handler->raise))(handler->instance);
-                sleep(1);
-                (*cc_cb)(self->vcwm.display);
-                retval = TRUE;
-            } else {
-                printf("callback invalida\n");
-            }
-        } else {
-            printf("commands invalido\n");
-        }
-    } else {
-        printf("handler invalido\n");
+    if (!self) {
+        vc_trace("control_manager_execute: self inválido\n");
+        return FALSE;
     }
 
-    g_free(cmd);
+    if (!command) {
+        vc_trace("control_manager_execute: command inválido\n");
+        return FALSE;
+    }
+
+    args = g_strsplit(command, " ", 0);
+    plugin_name = args[0];
+
+    handler = g_hash_table_lookup(self->plugins, plugin_name);
+    if (!handler) {
+        vc_trace("Plugin '%s' não encontrado\n", plugin_name);
+        plugin_name = CTRL_PLUGIN_DEFAULT;
+
+        handler = g_hash_table_lookup(self->plugins, plugin_name);
+        if (!handler) {
+            vc_trace("Plugin default '%s' não encontrado, abortando\n",
+                plugin_name);
+
+            vc_trace("Liberando memória alocada para 'args'\n");
+            g_strfreev(args);
+
+            return FALSE;
+        }
+
+        plugin_exec = g_strdup(command);
+        vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name, handler);
+        vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
+    } else {
+        plugin_exec = g_strjoinv(" ", &args[1]);
+        vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name, handler);
+        vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
+    }
+
+    commands = (*(handler->commands))(handler->instance);
+    if (commands) {
+        vc_trace("Obtive tabela de comandos do plugin '%s' em [%p]\n",
+            plugin_name, commands);
+
+        cmd_cb = g_hash_table_lookup(commands, plugin_exec);
+        if (cmd_cb) {
+            vc_trace("Obtive comando '%s' em [%p]\n", plugin_exec, cmd_cb);
+
+            raise_cb = handler->raise;
+            if (raise_cb) {
+                (*raise_cb)(handler->instance);
+                sleep(1);
+                (*cmd_cb)(self->vcwm.display);
+
+                retval = TRUE;
+            } else {
+                vc_trace("Falha ao obter 'raise'\n");
+            }
+        } else {
+            vc_trace("Falha ao obter callback do comando '%s'\n",
+                plugin_exec);
+        }
+    } else {
+        vc_trace("Falha ao obter a tabela de comandos do plugin '%s'\n",
+            plugin_name);
+    }
+
+    vc_trace("Liberando memória alocada para 'args'\n");
     g_strfreev(args);
+
+    vc_trace("Liberando memória alocada para 'plugin_exec'\n");
+    g_free(plugin_exec);
 
     return retval;
 }
@@ -170,7 +251,8 @@ void _list_plugins(gpointer key, gpointer value, gpointer data) {
         g_hash_table_size(commands));
     g_hash_table_foreach(commands, _list_commands, NULL);
 }
-void control_manager_list(control_manager_t* self) {
-    printf("Plugins de controle: %d\n", g_hash_table_size(self->plugins));
-    g_hash_table_foreach(self->plugins, _list_plugins, NULL);
+
+gchar* _plugin_path(gchar* plugin_dir, gchar* plugin_name) {
+    return g_strconcat(plugin_dir, "lib", plugin_name, "-",
+        VCC_PLUGIN_API_VERSION, ".so", NULL);
 }

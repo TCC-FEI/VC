@@ -1,15 +1,14 @@
 #include <vc/control/handler.h>
 
-#include <stdlib.h>
 #include <dlfcn.h>
 
 control_handler_t* control_handler_create(gchar* filename) {
     control_handler_t* self;
     char* error;
 
-    self = (control_handler_t*) malloc(sizeof(control_handler_t));
+    self = g_try_new0(control_handler_t, 1);
     if (!self) {
-        vc_trace("Falha ao alocar memória para control::handler\n");
+        vc_trace("Falha ao alocar memória para control_handler\n");
         return NULL;
     }
 
@@ -70,16 +69,17 @@ void control_handler_destroy(gpointer handler) {
                 vc_trace("Invocando 'destroy' [%p]\n", self->destroy);
                 (*(self->destroy))(self->instance);
             } else {
-                vc_trace("Forçando com 'free()'\n");
-                free(self->instance);
+                vc_trace("Forçando desalocação 'g_free()'\n");
+                g_free(self->instance);
             }
         }
 
         if (self->lib) {
             vc_trace("Descarregando biblioteca dinâmmica [%p]\n", self->lib);
+            dlclose(self->lib);
         }
 
         vc_trace("Liberando memória do control::handler [%p]\n", self);
-        free(self);
+        g_free(self);
     }
 }

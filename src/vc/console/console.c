@@ -1,7 +1,6 @@
 #include <vc/console/console.h>
 #include <vc/console/commands.h>
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -31,8 +30,8 @@ gpointer console(gpointer data) {
 
 console_t* _initialize(gpointer data) {
     vc_trace("\nConsole inicializando...\n");
-    console_t* self = (console_t*) malloc(sizeof(console_t));
 
+    console_t* self = g_try_new0(console_t, 1);
     if (!self) {
         vc_trace("Falha alocando memória para console\n");
         return NULL;
@@ -95,7 +94,7 @@ void _finalize(console_t* self) {
         }
 
         vc_trace("Liberando memória do console  [%p]\n", self);
-        free(self);
+        g_free(self);
     }
 
     vc_trace("Console finalizado\n");
