@@ -46,11 +46,11 @@ pkgconfig_DATA = ../vcc-plugin-$(VCC_PLUGIN_API_VERSION).pc
 
 
 pkglibdir = $(libdir)/plugins
-pkglib_LTLIBRARIES = libsphinx-@VCC_PLUGIN_API_VERSION@.la libgedit-@VCC_PLUGIN_API_VERSION@.la 
+pkglib_LTLIBRARIES = libsphinx-@VCC_PLUGIN_API_VERSION@.la libeditor-@VCC_PLUGIN_API_VERSION@.la 
 
-libgedit_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/gedit/gedit.c
-libgedit_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
-libgedit_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCC_DEPS_LIBS) libvcc-plugin-$(VCC_PLUGIN_API_VERSION).la
+libeditor_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/gedit/gedit.c
+libeditor_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
+libeditor_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCC_DEPS_LIBS) libvcc-plugin-$(VCC_PLUGIN_API_VERSION).la
 
 libsphinx_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/manager.h vc/speech/plugin.h plugins/speech/sphinx/sphinx.c
 libsphinx_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
