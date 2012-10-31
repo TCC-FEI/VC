@@ -46,7 +46,13 @@ pkgconfig_DATA = ../vcc-plugin-$(VCC_PLUGIN_API_VERSION).pc
 
 
 pkglibdir = $(libdir)/plugins
-pkglib_LTLIBRARIES = libsphinx-@VCC_PLUGIN_API_VERSION@.la libeditor-@VCC_PLUGIN_API_VERSION@.la 
+pkglib_LTLIBRARIES =    libsphinx-@VCC_PLUGIN_API_VERSION@.la \
+                        libcomputer-@VCC_PLUGIN_API_VERSION@.la \
+                        libeditor-@VCC_PLUGIN_API_VERSION@.la
+
+libcomputer_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/computer/computer.c
+libcomputer_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
+libcomputer_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCC_DEPS_LIBS) libvcc-plugin-$(VCC_PLUGIN_API_VERSION).la
 
 libeditor_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/gedit/gedit.c
 libeditor_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
