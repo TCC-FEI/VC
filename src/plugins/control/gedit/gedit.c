@@ -4,7 +4,12 @@
 
 void file_new(gpointer data);
 void file_close(gpointer data);
-void file_quit(gpointer data);
+void quit(gpointer data);
+void select_all(gpointer data);
+void cut(gpointer data);
+void copy(gpointer data);
+void paste(gpointer data);
+void save(gpointer data);
 
 guint32 register_commands(gpointer data) {
     control_plugin_t* self = (control_plugin_t*) data;
@@ -17,7 +22,12 @@ guint32 register_commands(gpointer data) {
 
     g_hash_table_insert(self->commands, "file new", file_new);
     g_hash_table_insert(self->commands, "file close", file_close);
-    g_hash_table_insert(self->commands, "file quit", file_quit);
+    g_hash_table_insert(self->commands, "quit", quit);
+    g_hash_table_insert(self->commands, "select all", select_all);
+    g_hash_table_insert(self->commands, "cut", cut);
+    g_hash_table_insert(self->commands, "copy", copy);
+    g_hash_table_insert(self->commands, "paste", paste);
+    g_hash_table_insert(self->commands, "save", save);
 
     return CTRL_SUCCESS;
 }
@@ -85,12 +95,72 @@ void file_close(gpointer data) {
     key_set_del(set);
 }
 
-void file_quit(gpointer data) {
+void quit(gpointer data) {
     Display* display = (Display*) data;
     GArray* set = key_set_new(2);
 
     key_set_add(set, XK_Control_L);
     key_set_add(set, XK_Q);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void select_all(gpointer data) {
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(2);
+
+    key_set_add(set, XK_Control_L);
+    key_set_add(set, XK_A);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void cut(gpointer data) {
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(2);
+
+    key_set_add(set, XK_Control_L);
+    key_set_add(set, XK_X);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void copy(gpointer data) {
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(2);
+
+    key_set_add(set, XK_Control_L);
+    key_set_add(set, XK_C);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void paste(gpointer data) {
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(2);
+
+    key_set_add(set, XK_Control_L);
+    key_set_add(set, XK_V);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void save(gpointer data) {
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(2);
+
+    key_set_add(set, XK_Control_L);
+    key_set_add(set, XK_S);
 
     send_key_event(display, set);
 
