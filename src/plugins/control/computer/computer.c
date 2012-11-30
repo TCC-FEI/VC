@@ -28,7 +28,7 @@ guint32 raise_window(gpointer data) {
     return CTRL_SUCCESS;
 }
 
-guint32 run_app(gpointer data){
+guint32 run_app(gpointer data) {
     return CTRL_SUCCESS;
 }
 
