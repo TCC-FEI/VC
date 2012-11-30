@@ -1,4 +1,12 @@
 
+up
+down
+left
+right
+computer change window
+computer run editor
+computer run browser
+computer run office
 browser new tab
 browser new window
 browser open file
@@ -54,4 +62,5 @@ office select all
 office find
 office find and replace
 office close window
+
 

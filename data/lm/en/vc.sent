@@ -1,3 +1,11 @@
+<s> UP </s>
+<s> DOWN </s>
+<s> LEFT </s>
+<s> RIGHT </s>
+<s> COMPUTER CHANGE WINDOW </s>
+<s> COMPUTER RUN EDITOR </s>
+<s> COMPUTER RUN BROWSER </s>
+<s> COMPUTER RUN OFFICE </s>
 <s> BROWSER NEW TAB </s>
 <s> BROWSER NEW WINDOW </s>
 <s> BROWSER OPEN FILE </s>
