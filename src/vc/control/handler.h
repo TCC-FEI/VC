@@ -8,6 +8,7 @@ typedef gpointer (*create_t)(gpointer);
 typedef void (*destroy_t)(gpointer);
 typedef guint32 (*reg_cmd_t)(gpointer);
 typedef GHashTable* (*commands_t)(gpointer);
+typedef guint32 (*run_app_t)(gpointer);
 typedef void (*raise_t)(gpointer);
 typedef void (*control_command_t)(gpointer);
 
@@ -18,6 +19,7 @@ typedef struct {
     destroy_t destroy;
     reg_cmd_t reg_cmd;
     commands_t commands;
+    run_app_t run_app;
     raise_t raise;
 } control_handler_t;
 

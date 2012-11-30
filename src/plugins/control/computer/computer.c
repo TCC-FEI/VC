@@ -28,6 +28,10 @@ guint32 raise_window(gpointer data) {
     return CTRL_SUCCESS;
 }
 
+guint32 run_app(gpointer data){
+    return CTRL_SUCCESS;
+}
+
 void up(gpointer data) {
     Display* display = (Display*) data;
     GArray* set = key_set_new(1);

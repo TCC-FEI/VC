@@ -20,6 +20,7 @@ guint32 register_commands(gpointer data) {
     if (!self->commands)
         return CTRL_INVALID_COMMAND_TABLE;
 
+    g_hash_table_insert(self->commands, "run", run_app);
     g_hash_table_insert(self->commands, "file new", file_new);
     g_hash_table_insert(self->commands, "file close", file_close);
     g_hash_table_insert(self->commands, "quit", quit);
@@ -69,6 +70,16 @@ guint32 raise_window(gpointer data) {
     }
 
     return status;
+}
+
+guint32 run_app(gpointer data) {
+    gint argc;
+    gchar** argv;
+    g_shell_parse_argv("/usr/bin/gedit", &argc, &argv, NULL);
+    g_spawn_async(NULL, argv, NULL,
+        G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL, NULL, NULL,
+        NULL, NULL);
+    g_strfreev(argv);
 }
 
 void file_new(gpointer data) {

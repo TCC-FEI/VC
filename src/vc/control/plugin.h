@@ -27,6 +27,7 @@ typedef struct {
 } control_plugin_t;
 
 guint32 register_commands(gpointer);
+guint32 run_app(gpointer);
 guint32 raise_window(gpointer);
 
 GArray* key_set_new(guint);
