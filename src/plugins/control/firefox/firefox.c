@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 
-void file_new(gpointer data);
-void file_close(gpointer data);
+void new_tab(gpointer data);
+void print(gpointer data);
 void quit(gpointer data);
 void select_all(gpointer data);
 void cut(gpointer data);
@@ -21,8 +21,8 @@ guint32 register_commands(gpointer data) {
         return CTRL_INVALID_COMMAND_TABLE;
 
     g_hash_table_insert(self->commands, "run", run_app);
-    g_hash_table_insert(self->commands, "file new", file_new);
-    g_hash_table_insert(self->commands, "file close", file_close);
+    g_hash_table_insert(self->commands, "new tab", new_tab);
+    g_hash_table_insert(self->commands, "print", print);
     g_hash_table_insert(self->commands, "quit", quit);
     g_hash_table_insert(self->commands, "select all", select_all);
     g_hash_table_insert(self->commands, "cut", cut);
@@ -62,7 +62,7 @@ guint32 raise_window(gpointer data) {
         if (!app)
             continue;
 
-        if (strcmp(wnck_application_get_name(app), "gedit") == 0) {
+        if (strcmp(wnck_application_get_name(app), "Firefox") == 0) {
             wnck_window_activate(window, (guint32) time(NULL));
             status = CTRL_SUCCESS;
             break;
@@ -75,14 +75,14 @@ guint32 raise_window(gpointer data) {
 guint32 run_app(gpointer data) {
     gint argc;
     gchar** argv;
-    g_shell_parse_argv("/usr/bin/gedit", &argc, &argv, NULL);
+    g_shell_parse_argv("/usr/bin/firefox", &argc, &argv, NULL);
     g_spawn_async(NULL, argv, NULL,
         G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL, NULL, NULL,
         NULL, NULL);
     g_strfreev(argv);
 }
 
-void file_new(gpointer data) {
+void new_tab(gpointer data) {
     Display* display = (Display*) data;
     GArray* set = key_set_new(2);
 
@@ -94,12 +94,12 @@ void file_new(gpointer data) {
     key_set_del(set);
 }
 
-void file_close(gpointer data) {
+void print(gpointer data) {
     Display* display = (Display*) data;
     GArray* set = key_set_new(2);
 
     key_set_add(set, XK_Control_L);
-    key_set_add(set, XK_W);
+    key_set_add(set, XK_P);
 
     send_key_event(display, set);
 

@@ -46,13 +46,35 @@ pkgconfig_DATA = ../vcc-plugin-$(VCC_PLUGIN_API_VERSION).pc
 
 
 pkglibdir = $(libdir)/plugins
-pkglib_LTLIBRARIES = libsphinx-@VCC_PLUGIN_API_VERSION@.la libgedit-@VCC_PLUGIN_API_VERSION@.la 
+pkglib_LTLIBRARIES =    libsphinx-@VCS_PLUGIN_API_VERSION@.la \
+                        libcomputer-@VCC_PLUGIN_API_VERSION@.la \
+                        libeditor-@VCC_PLUGIN_API_VERSION@.la \
+                        libbrowser-@VCC_PLUGIN_API_VERSION@.la \
+                        liboffice-@VCC_PLUGIN_API_VERSION@.la
 
-libgedit_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/gedit/gedit.c
-libgedit_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
-libgedit_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCC_DEPS_LIBS) libvcc-plugin-$(VCC_PLUGIN_API_VERSION).la
+libcomputer_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/computer/computer.c
+libcomputer_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
+libcomputer_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCC_DEPS_LIBS) libvcc-plugin-$(VCC_PLUGIN_API_VERSION).la
 
-libsphinx_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/manager.h vc/speech/plugin.h plugins/speech/sphinx/sphinx.c
-libsphinx_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
-libsphinx_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCS_DEPS_LIBS)
+libeditor_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/gedit/gedit.c
+libeditor_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
+libeditor_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCC_DEPS_LIBS) libvcc-plugin-$(VCC_PLUGIN_API_VERSION).la
 
+libbrowser_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/firefox/firefox.c
+libbrowser_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
+libbrowser_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCC_DEPS_LIBS) libvcc-plugin-$(VCC_PLUGIN_API_VERSION).la
+
+liboffice_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/libreoffice/libreoffice.c
+liboffice_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
+liboffice_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCC_DEPS_LIBS) libvcc-plugin-$(VCC_PLUGIN_API_VERSION).la
+
+libsphinx_@VCS_PLUGIN_API_VERSION@_la_SOURCES = vc/control/manager.h vc/speech/plugin.h plugins/speech/sphinx/sphinx.c
+libsphinx_@VCS_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCS_PLUGIN_SO_VERSION)
+libsphinx_@VCS_PLUGIN_API_VERSION@_la_LIBADD = $(VCS_DEPS_LIBS)
+
+
+
+
+
+install-data-local:
+	mkdir -p $(pkgdatadir) && cp -Rfva ../data/* $(pkgdatadir)/

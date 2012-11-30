@@ -25,8 +25,6 @@ gpointer create(gpointer data) {
 
     self->vcwm = *((vcwm_t*) data);
 
-    register_commands(self);
-
     return self;
 }
 

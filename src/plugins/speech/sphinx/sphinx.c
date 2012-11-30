@@ -3,6 +3,8 @@
 #include <gst/gst.h>
 #include <stdio.h>
 
+#include <sys/time.h>
+
 struct speech_plugin_st {
     GstElement* pipeline;
 };
@@ -10,15 +12,24 @@ struct speech_plugin_st {
 void result(GstElement* object, gchararray arg0, gchararray arg1,
     gpointer data) {
     control_manager_t* control = (control_manager_t*) data;
-
+    struct timeval start;
+    struct timeval stop;
+    
     printf("hipótese: %s\n", arg0);
 
     printf("object: [%p]\n", object);
     printf("arg0:   [%p]\n", arg0);
     printf("arg1:   [%p]\n", arg1);
     printf("data:   [%p]\n", data);
-
+    
+    gettimeofday(&start, NULL);
+    
     (*(control->execute))(control, g_utf8_strdown (arg0, -1));
+
+    gettimeofday(&stop, NULL);
+    
+    printf("\n\nStart: %ld.%06ld \t Stop: %ld.%06ld \t Diferenca: %ld\n\n", 
+            start.tv_sec, start.tv_usec, stop.tv_sec, stop.tv_usec, stop.tv_usec - start.tv_usec);
 }
 
 gpointer create(gpointer data) {

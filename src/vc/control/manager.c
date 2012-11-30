@@ -116,6 +116,8 @@ gboolean control_manager_load(gpointer data, gchar* plugin_name) {
     }
     vc_trace("Plugin %s alocado em [%p]\n", plugin_name, handler->instance);
 
+    (*(handler->reg_cmd))(handler->instance);
+
     GHashTable* commands = (*(handler->commands))(handler->instance);
     if (!commands) {
         vc_trace("Falha ao obter comandos do plugin %s\n", plugin_name);
@@ -155,6 +157,7 @@ gboolean control_manager_execute(gpointer data, gchar* command) {
     gchar** args = NULL;
     gchar* plugin_name = NULL;
     gchar* plugin_exec = NULL;
+    gchar* buffer = NULL;
 
     control_handler_t* handler = NULL;
     GHashTable* commands = NULL;
@@ -176,6 +179,16 @@ gboolean control_manager_execute(gpointer data, gchar* command) {
 
     args = g_strsplit(command, " ", 0);
     plugin_name = args[0];
+
+    if (strcmp(plugin_name, CTRL_PLUGIN_DEFAULT) == 0
+        && strcmp(args[1], "run") == 0) {
+        buffer = g_strconcat(args[2], " run", NULL);
+
+        retval = control_manager_load(self, args[2])
+            && control_manager_execute(self, buffer);
+        g_free(buffer);
+        return retval;
+    }
 
     handler = g_hash_table_lookup(self->plugins, plugin_name);
     if (!handler) {

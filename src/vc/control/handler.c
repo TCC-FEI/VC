@@ -39,6 +39,15 @@ control_handler_t* control_handler_create(gchar* filename) {
     vc_trace("Obtive 'destroy' em:      [%p]\n", self->destroy);
 
     dlerror();
+    *(void **) (&(self->reg_cmd)) = dlsym(self->lib, "register_commands");
+    if ((error = dlerror()) != NULL) {
+        vc_trace("%s\n", dlerror());
+        control_handler_destroy(self);
+        return NULL;
+    }
+    vc_trace("Obtive 'register_commands' em: [%p]\n", self->reg_cmd);
+
+    dlerror();
     *(void **) (&(self->commands)) = dlsym(self->lib, "commands");
     if ((error = dlerror()) != NULL) {
         vc_trace("%s\n", dlerror());
@@ -55,6 +64,15 @@ control_handler_t* control_handler_create(gchar* filename) {
         return NULL;
     }
     vc_trace("Obtive 'raise_window' em: [%p]\n", self->raise);
+
+    dlerror();
+    *(void **) (&(self->run_app)) = dlsym(self->lib, "run_app");
+    if ((error = dlerror()) != NULL) {
+        vc_trace("%s\n", dlerror());
+        control_handler_destroy(self);
+        return NULL;
+    }
+    vc_trace("Obtive 'run_app' em: [%p]\n", self->run_app);
 
     return self;
 }
