@@ -116,6 +116,8 @@ gboolean control_manager_load(gpointer data, gchar* plugin_name) {
     }
     vc_trace("Plugin %s alocado em [%p]\n", plugin_name, handler->instance);
 
+    (*(handler->reg_cmd))(handler->instance);
+
     GHashTable* commands = (*(handler->commands))(handler->instance);
     if (!commands) {
         vc_trace("Falha ao obter comandos do plugin %s\n", plugin_name);
