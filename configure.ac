@@ -32,6 +32,7 @@ AC_DEFINE_UNQUOTED(
 )
 
 AC_DEFINE_UNQUOTED([PREFIX], ["${prefix}"], [get prefix])
+AC_DEFINE_UNQUOTED([DATADIR], ["${datadir}"], [get datadir])
 AC_DEFINE([WNCK_I_KNOW_THIS_IS_UNSTABLE], 1,
           [alerts libwnck that I know what I am doing])
 
