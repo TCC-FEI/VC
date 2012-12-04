@@ -76,10 +76,10 @@ gpointer create(gpointer data) {
 
     printf("Elementos criados com sucesso!\n");
 
-    g_object_set(G_OBJECT(pocket), "hmm", "/tmp/data/hmm/en_US/hub4wsj_sc_8k",
+    g_object_set(G_OBJECT(pocket), "hmm", VCS_DATA_DIR "/hmm/en_US/hub4wsj_sc_8k",
         NULL);
-    g_object_set(G_OBJECT(pocket), "lm", "/tmp/data/lm/en/vc.dmp", NULL);
-    g_object_set(G_OBJECT(pocket), "dict", "/tmp/data/lm/en/vc.dic", NULL);
+    g_object_set(G_OBJECT(pocket), "lm", VCS_DATA_DIR "/lm/en/vc.dmp", NULL);
+    g_object_set(G_OBJECT(pocket), "dict", VCS_DATA_DIR "/lm/en/vc.dic", NULL);
 
     g_object_set(G_OBJECT(vader), "auto_threshold", TRUE, NULL);
 

@@ -76,6 +76,15 @@ console_t* _initialize(gpointer data) {
     self->terminate = FALSE;
     vc_trace("Flag de fim da thread: %d\n", self->terminate);
 
+    /**
+     * Plugins iniciais
+     */
+    control_manager_load( self->app->control, "computer" );
+    speech_manager_load( self->app->speech, "sphinx" );
+    gchar** args = g_strsplit("spch start", " ", 0);
+    cc_spch(self, args);
+    g_strfreev(args);
+
     return self;
 }
 
