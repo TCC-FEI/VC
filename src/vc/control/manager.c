@@ -184,7 +184,9 @@ gboolean control_manager_execute(gpointer data, gchar* command) {
 
     args = g_strsplit(command, " ", 0);
 
-    if (strcmp(args[0], "run") == 0) {
+    printf(">>>1(%d)\n", g_strv_length(args));
+
+    if (g_strv_length(args) > 1 && strcmp(args[0], "run") == 0) {
         plugin_name = args[1];
         plugin_exec = g_strconcat(plugin_name, " run", NULL);
 
@@ -192,7 +194,8 @@ gboolean control_manager_execute(gpointer data, gchar* command) {
             && control_manager_execute(self, plugin_exec);
         g_free(plugin_exec);
         return retval;
-    } else if (strcmp(args[0], CTRL_PLUGIN_DEFAULT) == 0
+    } else if (g_strv_length(args) > 2
+        && strcmp(args[0], CTRL_PLUGIN_DEFAULT) == 0
         && strcmp(args[1], "run") == 0) {
         plugin_name = args[2];
         plugin_exec = g_strconcat(args[2], " run", NULL);
@@ -204,6 +207,8 @@ gboolean control_manager_execute(gpointer data, gchar* command) {
     } else {
         plugin_name = args[0];
     }
+
+    printf(">>>2\n");
 
     handler = g_hash_table_lookup(self->plugins, plugin_name);
     if (!handler) {
@@ -225,9 +230,17 @@ gboolean control_manager_execute(gpointer data, gchar* command) {
         vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name, handler);
         vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
     } else {
-        plugin_exec = g_strjoinv(" ", &args[1]);
-        vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name, handler);
-        vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
+        if (g_strv_length(args) > 1) {
+            plugin_exec = g_strjoinv(" ", &args[1]);
+            vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name,
+                handler);
+            vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
+        } else {
+            plugin_exec = g_strdup("");
+            vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name,
+                handler);
+            vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
+        }
     }
 
     commands = (*(handler->commands))(handler->instance);
