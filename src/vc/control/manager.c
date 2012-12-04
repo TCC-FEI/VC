@@ -227,7 +227,7 @@ gboolean control_manager_execute(gpointer data, gchar* command) {
             raise_cb = handler->raise;
             if (raise_cb) {
                 (*raise_cb)(handler->instance);
-                sleep(1);
+                usleep(40);
                 (*cmd_cb)(self->vcwm.display);
 
                 retval = TRUE;

@@ -1,12 +1,13 @@
 
-up
-down
-left
-right
+computer up
+computer down
+computer left
+computer right
 computer change window
 computer run editor
 computer run browser
 computer run office
+browser focus
 browser new tab
 browser new window
 browser open file
@@ -24,6 +25,7 @@ browser show all history
 browser show all bookmarks
 browser bookmark this page
 browser downloads
+editor focus
 editor file new
 editor file open
 editor file save
@@ -46,6 +48,7 @@ editor clear highlight
 editor go to line
 editor save all
 editor close all
+office focus
 office new presentation
 office open
 office save

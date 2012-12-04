@@ -10,6 +10,7 @@ void cut(gpointer data);
 void copy(gpointer data);
 void paste(gpointer data);
 void save(gpointer data);
+void focus(gpointer data);
 
 guint32 register_commands(gpointer data) {
     control_plugin_t* self = (control_plugin_t*) data;
@@ -29,6 +30,7 @@ guint32 register_commands(gpointer data) {
     g_hash_table_insert(self->commands, "copy", copy);
     g_hash_table_insert(self->commands, "paste", paste);
     g_hash_table_insert(self->commands, "save", save);
+    g_hash_table_insert(self->commands, "focus", focus);
 
     return CTRL_SUCCESS;
 }
@@ -176,4 +178,8 @@ void save(gpointer data) {
     send_key_event(display, set);
 
     key_set_del(set);
+}
+
+void focus(gpointer data){
+
 }
