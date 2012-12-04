@@ -39,6 +39,10 @@ int main(int argc, char** argv) {
     if (app.control && app.speech) {
         cmd_th = g_thread_try_new("console", console, &app, &cmd_th_err);
         if (cmd_th) {
+            control_manager_load(app.control, "computer");
+            //speech_manager_load(app.speech, "sphinx");
+            //speech_manager_exec(app.speech, "sphinx start");
+
             g_main_loop_run(app.main_loop);
         } else {
             printf("g_thread error: %s\n", cmd_th_err->message);
