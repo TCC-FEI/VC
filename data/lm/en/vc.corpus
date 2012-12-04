@@ -1,12 +1,40 @@
 
+
+
+
+
+up
+down
+left
+right
+tab
+escape
+run editor
+run browser
+run office
+run tetris
+rotate
+back
+forward
+confirm
+enter
 computer up
 computer down
 computer left
 computer right
-computer change window
+computer tab
+computer escape
 computer run editor
 computer run browser
 computer run office
+computer rotate
+computer back
+computer forward
+computer confirm
+computer enter
+run editor
+run browser
+run office
 browser focus
 browser new tab
 browser new window
@@ -65,5 +93,9 @@ office select all
 office find
 office find and replace
 office close window
+
+
+
+
 
 

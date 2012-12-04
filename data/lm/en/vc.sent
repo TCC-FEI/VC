@@ -2,10 +2,35 @@
 <s> DOWN </s>
 <s> LEFT </s>
 <s> RIGHT </s>
-<s> COMPUTER CHANGE WINDOW </s>
+<s> TAB </s>
+<s> ESCAPE </s>
+<s> RUN EDITOR </s>
+<s> RUN BROWSER </s>
+<s> RUN OFFICE </s>
+<s> RUN TETRIS </s>
+<s> ROTATE </s>
+<s> BACK </s>
+<s> FORWARD </s>
+<s> CONFIRM </s>
+<s> ENTER </s>
+<s> COMPUTER UP </s>
+<s> COMPUTER DOWN </s>
+<s> COMPUTER LEFT </s>
+<s> COMPUTER RIGHT </s>
+<s> COMPUTER TAB </s>
+<s> COMPUTER ESCAPE </s>
 <s> COMPUTER RUN EDITOR </s>
 <s> COMPUTER RUN BROWSER </s>
 <s> COMPUTER RUN OFFICE </s>
+<s> COMPUTER ROTATE </s>
+<s> COMPUTER BACK </s>
+<s> COMPUTER FORWARD </s>
+<s> COMPUTER CONFIRM </s>
+<s> COMPUTER ENTER </s>
+<s> RUN EDITOR </s>
+<s> RUN BROWSER </s>
+<s> RUN OFFICE </s>
+<s> BROWSER FOCUS </s>
 <s> BROWSER NEW TAB </s>
 <s> BROWSER NEW WINDOW </s>
 <s> BROWSER OPEN FILE </s>
@@ -23,6 +48,7 @@
 <s> BROWSER SHOW ALL BOOKMARKS </s>
 <s> BROWSER BOOKMARK THIS PAGE </s>
 <s> BROWSER DOWNLOADS </s>
+<s> EDITOR FOCUS </s>
 <s> EDITOR FILE NEW </s>
 <s> EDITOR FILE OPEN </s>
 <s> EDITOR FILE SAVE </s>
@@ -45,6 +71,7 @@
 <s> EDITOR GO TO LINE </s>
 <s> EDITOR SAVE ALL </s>
 <s> EDITOR CLOSE ALL </s>
+<s> OFFICE FOCUS </s>
 <s> OFFICE NEW PRESENTATION </s>
 <s> OFFICE OPEN </s>
 <s> OFFICE SAVE </s>
