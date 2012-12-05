@@ -1,0 +1,90 @@
+<s> UP </s>
+<s> DOWN </s>
+<s> LEFT </s>
+<s> RIGHT </s>
+<s> TAB </s>
+<s> ESCAPE </s>
+<s> RUN EDITOR </s>
+<s> RUN BROWSER </s>
+<s> RUN OFFICE </s>
+<s> RUN TETRIS </s>
+<s> ROTATE </s>
+<s> BACK </s>
+<s> FORWARD </s>
+<s> CONFIRM </s>
+<s> ENTER </s>
+<s> COMPUTER UP </s>
+<s> COMPUTER DOWN </s>
+<s> COMPUTER LEFT </s>
+<s> COMPUTER RIGHT </s>
+<s> COMPUTER TAB </s>
+<s> COMPUTER ESCAPE </s>
+<s> COMPUTER RUN EDITOR </s>
+<s> COMPUTER RUN BROWSER </s>
+<s> COMPUTER RUN OFFICE </s>
+<s> COMPUTER ROTATE </s>
+<s> COMPUTER BACK </s>
+<s> COMPUTER FORWARD </s>
+<s> COMPUTER CONFIRM </s>
+<s> COMPUTER ENTER </s>
+<s> RUN EDITOR </s>
+<s> RUN BROWSER </s>
+<s> RUN OFFICE </s>
+<s> BROWSER FOCUS </s>
+<s> BROWSER NEW TAB </s>
+<s> BROWSER NEW WINDOW </s>
+<s> BROWSER OPEN FILE </s>
+<s> BROWSER SAVE PAGE AS </s>
+<s> BROWSER PRINT </s>
+<s> BROWSER QUIT </s>
+<s> BROWSER UNDO </s>
+<s> BROWSER REDO </s>
+<s> BROWSER CUT </s>
+<s> BROWSER COPY </s>
+<s> BROWSER PASTE </s>
+<s> BROWSER SELECT ALL </s>
+<s> BROWSER FIND </s>
+<s> BROWSER SHOW ALL HISTORY </s>
+<s> BROWSER SHOW ALL BOOKMARKS </s>
+<s> BROWSER BOOKMARK THIS PAGE </s>
+<s> BROWSER DOWNLOADS </s>
+<s> EDITOR FOCUS </s>
+<s> EDITOR FILE NEW </s>
+<s> EDITOR FILE OPEN </s>
+<s> EDITOR FILE SAVE </s>
+<s> EDITOR FILE SAVE AS </s>
+<s> EDITOR PRINT PREVIEW </s>
+<s> EDITOR PRINT </s>
+<s> EDITOR FILE CLOSE </s>
+<s> EDITOR QUIT </s>
+<s> EDITOR UNDO </s>
+<s> EDITOR REDO </s>
+<s> EDITOR CUT </s>
+<s> EDITOR COPY </s>
+<s> EDITOR PASTE </s>
+<s> EDITOR SELECT ALL </s>
+<s> EDITOR FIND </s>
+<s> EDITOR FIND NEXT </s>
+<s> EDITOR FIND PREVIOUS </s>
+<s> EDITOR REPLACE </s>
+<s> EDITOR CLEAR HIGHLIGHT </s>
+<s> EDITOR GO TO LINE </s>
+<s> EDITOR SAVE ALL </s>
+<s> EDITOR CLOSE ALL </s>
+<s> OFFICE FOCUS </s>
+<s> OFFICE NEW PRESENTATION </s>
+<s> OFFICE OPEN </s>
+<s> OFFICE SAVE </s>
+<s> OFFICE SAVE AS </s>
+<s> OFFICE PRINT </s>
+<s> OFFICE EXIT </s>
+<s> OFFICE UNDO </s>
+<s> OFFICE REDO </s>
+<s> OFFICE CUT </s>
+<s> OFFICE COPY </s>
+<s> OFFICE PASTE </s>
+<s> OFFICE PASTE SPECIAL </s>
+<s> OFFICE SELECT ALL </s>
+<s> OFFICE FIND </s>
+<s> OFFICE FIND AND REPLACE </s>
+<s> OFFICE CLOSE WINDOW </s>
