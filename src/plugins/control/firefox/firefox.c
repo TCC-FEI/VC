@@ -92,7 +92,7 @@ void new_tab(gpointer data) {
     GArray* set = key_set_new(2);
 
     key_set_add(set, XK_Control_L);
-    key_set_add(set, XK_N);
+    key_set_add(set, XK_T);
 
     send_key_event(display, set);
 

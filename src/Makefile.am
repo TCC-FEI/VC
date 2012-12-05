@@ -50,7 +50,8 @@ pkglib_LTLIBRARIES =    libsphinx-@VCS_PLUGIN_API_VERSION@.la \
                         libcomputer-@VCC_PLUGIN_API_VERSION@.la \
                         libeditor-@VCC_PLUGIN_API_VERSION@.la \
                         libbrowser-@VCC_PLUGIN_API_VERSION@.la \
-                        liboffice-@VCC_PLUGIN_API_VERSION@.la
+                        liboffice-@VCC_PLUGIN_API_VERSION@.la \
+                        libtetris-@VCC_PLUGIN_API_VERSION@.la
 
 libcomputer_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/computer/computer.c
 libcomputer_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
@@ -72,7 +73,9 @@ libsphinx_@VCS_PLUGIN_API_VERSION@_la_SOURCES = vc/control/manager.h vc/speech/p
 libsphinx_@VCS_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCS_PLUGIN_SO_VERSION)
 libsphinx_@VCS_PLUGIN_API_VERSION@_la_LIBADD = $(VCS_DEPS_LIBS)
 
-
+libtetris_@VCC_PLUGIN_API_VERSION@_la_SOURCES = vc/control/plugin.h plugins/control/tetris/tetris.c
+libtetris_@VCC_PLUGIN_API_VERSION@_la_LDFLAGS = -version-info $(VCC_PLUGIN_SO_VERSION)
+libtetris_@VCC_PLUGIN_API_VERSION@_la_LIBADD = $(VCC_DEPS_LIBS) libvcc-plugin-$(VCC_PLUGIN_API_VERSION).la
 
 
 

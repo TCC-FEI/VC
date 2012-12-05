@@ -8,6 +8,7 @@ void left(gpointer data);
 void right(gpointer data);
 void tab(gpointer data);
 void enter(gpointer data);
+void _close(gpointer data);
 
 guint32 register_commands(gpointer data) {
     control_plugin_t* self = (control_plugin_t*) data;
@@ -28,6 +29,7 @@ guint32 register_commands(gpointer data) {
     g_hash_table_insert(self->commands, "enter", enter);
     g_hash_table_insert(self->commands, "confirm", enter);
     g_hash_table_insert(self->commands, "tab", tab);
+    g_hash_table_insert(self->commands, "close", _close);
 
     return CTRL_SUCCESS;
 }
@@ -100,6 +102,18 @@ void enter(gpointer data){
     GArray* set = key_set_new(1);
 
     key_set_add(set, XK_Return);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void _close(gpointer data){
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(2);
+
+    key_set_add(set, XK_Alt_L);
+    key_set_add(set, XK_F4);
 
     send_key_event(display, set);
 
