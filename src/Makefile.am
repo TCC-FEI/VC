@@ -74,7 +74,5 @@ libsphinx_@VCS_PLUGIN_API_VERSION@_la_LIBADD = $(VCS_DEPS_LIBS)
 
 
 
-
-
 install-data-local:
 	mkdir -p $(pkgdatadir) && cp -Rfva ../data/* $(pkgdatadir)/

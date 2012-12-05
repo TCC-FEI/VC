@@ -6,6 +6,9 @@ void up(gpointer data);
 void down(gpointer data);
 void left(gpointer data);
 void right(gpointer data);
+void tab(gpointer data);
+void enter(gpointer data);
+void _close(gpointer data);
 
 guint32 register_commands(gpointer data) {
     control_plugin_t* self = (control_plugin_t*) data;
@@ -17,9 +20,16 @@ guint32 register_commands(gpointer data) {
         return CTRL_INVALID_COMMAND_TABLE;
 
     g_hash_table_insert(self->commands, "up", up);
+    g_hash_table_insert(self->commands, "rotate", up);
     g_hash_table_insert(self->commands, "down", down);
     g_hash_table_insert(self->commands, "left", left);
+    g_hash_table_insert(self->commands, "back", left);
     g_hash_table_insert(self->commands, "right", right);
+    g_hash_table_insert(self->commands, "forward", right);
+    g_hash_table_insert(self->commands, "enter", enter);
+    g_hash_table_insert(self->commands, "confirm", enter);
+    g_hash_table_insert(self->commands, "tab", tab);
+    g_hash_table_insert(self->commands, "close", _close);
 
     return CTRL_SUCCESS;
 }
@@ -70,6 +80,40 @@ void right(gpointer data) {
     GArray* set = key_set_new(1);
 
     key_set_add(set, XK_Right);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void tab(gpointer data){
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(1);
+
+    key_set_add(set, XK_Tab);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void enter(gpointer data){
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(1);
+
+    key_set_add(set, XK_Return);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
+}
+
+void _close(gpointer data){
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(2);
+
+    key_set_add(set, XK_Alt_L);
+    key_set_add(set, XK_F4);
 
     send_key_event(display, set);
 

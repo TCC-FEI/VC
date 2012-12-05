@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     wnck_screen_force_update(ctrl_args.vcwm.screen);
     vc_trace("Obtendo WnckScreen default: [%p]\n", ctrl_args.vcwm.screen);
 
-    ctrl_args.plugin_dir = "/tmp/lib/plugins/";
+    ctrl_args.plugin_dir = PREFIX "/lib/plugins/";
     vc_trace("Diretório de plugins em '%s'\n", ctrl_args.plugin_dir);
 
     if (!ctrl_args.vcwm.display || !ctrl_args.vcwm.screen) {

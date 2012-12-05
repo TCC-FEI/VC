@@ -11,6 +11,7 @@ void copy(gpointer data);
 void paste(gpointer data);
 void save(gpointer data);
 void focus(gpointer data);
+void bookmarks(gpointer data);
 
 guint32 register_commands(gpointer data) {
     control_plugin_t* self = (control_plugin_t*) data;
@@ -31,6 +32,8 @@ guint32 register_commands(gpointer data) {
     g_hash_table_insert(self->commands, "paste", paste);
     g_hash_table_insert(self->commands, "save", save);
     g_hash_table_insert(self->commands, "focus", focus);
+    g_hash_table_insert(self->commands, "bookmarks", bookmarks);
+    g_hash_table_insert(self->commands, "close bookmarks", bookmarks);
 
     return CTRL_SUCCESS;
 }
@@ -89,7 +92,7 @@ void new_tab(gpointer data) {
     GArray* set = key_set_new(2);
 
     key_set_add(set, XK_Control_L);
-    key_set_add(set, XK_N);
+    key_set_add(set, XK_T);
 
     send_key_event(display, set);
 
@@ -182,4 +185,16 @@ void save(gpointer data) {
 
 void focus(gpointer data){
 
+}
+
+void bookmarks(gpointer data){
+    Display* display = (Display*) data;
+    GArray* set = key_set_new(2);
+
+    key_set_add(set, XK_Control_L);
+    key_set_add(set, XK_B);
+
+    send_key_event(display, set);
+
+    key_set_del(set);
 }

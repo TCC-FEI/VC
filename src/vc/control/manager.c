@@ -89,6 +89,11 @@ gboolean control_manager_load(gpointer data, gchar* plugin_name) {
         return FALSE;
     }
 
+    if (g_hash_table_lookup(self->plugins, plugin_name)) {
+        vc_trace("control_manager_load: plugin já carregado\n");
+        return TRUE;
+    }
+
     plugin_path = _plugin_path(self->plugin_dir, plugin_name);
     if (!strlen(plugin_path)) {
         vc_trace("Arquivo de plugin inválido\n");
@@ -178,17 +183,32 @@ gboolean control_manager_execute(gpointer data, gchar* command) {
     }
 
     args = g_strsplit(command, " ", 0);
-    plugin_name = args[0];
 
-    if (strcmp(plugin_name, CTRL_PLUGIN_DEFAULT) == 0
-        && strcmp(args[1], "run") == 0) {
-        buffer = g_strconcat(args[2], " run", NULL);
+    printf(">>>1(%d)\n", g_strv_length(args));
 
-        retval = control_manager_load(self, args[2])
-            && control_manager_execute(self, buffer);
-        g_free(buffer);
+    if (g_strv_length(args) > 1 && strcmp(args[0], "run") == 0) {
+        plugin_name = args[1];
+        plugin_exec = g_strconcat(plugin_name, " run", NULL);
+
+        retval = control_manager_load(self, plugin_name)
+            && control_manager_execute(self, plugin_exec);
+        g_free(plugin_exec);
         return retval;
+    } else if (g_strv_length(args) > 2
+        && strcmp(args[0], CTRL_PLUGIN_DEFAULT) == 0
+        && strcmp(args[1], "run") == 0) {
+        plugin_name = args[2];
+        plugin_exec = g_strconcat(args[2], " run", NULL);
+
+        retval = control_manager_load(self, plugin_name)
+            && control_manager_execute(self, plugin_exec);
+        g_free(plugin_exec);
+        return retval;
+    } else {
+        plugin_name = args[0];
     }
+
+    printf(">>>2\n");
 
     handler = g_hash_table_lookup(self->plugins, plugin_name);
     if (!handler) {
@@ -210,9 +230,17 @@ gboolean control_manager_execute(gpointer data, gchar* command) {
         vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name, handler);
         vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
     } else {
-        plugin_exec = g_strjoinv(" ", &args[1]);
-        vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name, handler);
-        vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
+        if (g_strv_length(args) > 1) {
+            plugin_exec = g_strjoinv(" ", &args[1]);
+            vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name,
+                handler);
+            vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
+        } else {
+            plugin_exec = g_strdup("");
+            vc_trace("Plugin '%s' encontrado em [%p]\n", plugin_name,
+                handler);
+            vc_trace("'%s' executará '%s'\n", plugin_name, plugin_exec);
+        }
     }
 
     commands = (*(handler->commands))(handler->instance);
